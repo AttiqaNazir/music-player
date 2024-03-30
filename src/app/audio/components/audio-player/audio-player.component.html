@@ -1,15 +1,15 @@
 <div class="audio-player">
 <!--  <img [src]="currentTrack.coverArt" alt="Cover Art">-->
   <div class="controls">
-    <button (click)="previousTrack()">Previous</button>
+    <button (click)="previousTrack()" [disabled]="isFirstTrack">Previous</button>
     <button (click)="playPause()">
       {{ isPlaying ? 'Pause' : 'Play' }}
     </button>
-    <button (click)="nextTrack()">Next</button>
+    <button (click)="nextTrack()" [disabled]="isLastTrack">Next</button>
     <button (click)="stop()">Stop</button>
   </div>
   <div class="progress-container">
-    <!-- Progress bar -->
+    <mat-progress-bar mode="determinate" [value]="progress" (click)="seek($event)"></mat-progress-bar>
   </div>
   <audio [src]="currentTrack.url">
     Your browser does not support the audio element.
