@@ -1,4 +1,17 @@
-<div class = "container">
-  <header>Name of the Artist </header>
-  
+<div class="audio-player">
+<!--  <img [src]="currentTrack.coverArt" alt="Cover Art">-->
+  <div class="controls">
+    <button (click)="previousTrack()">Previous</button>
+    <button (click)="playPause()">
+      {{ isPlaying ? 'Pause' : 'Play' }}
+    </button>
+    <button (click)="nextTrack()">Next</button>
+    <button (click)="stop()">Stop</button>
+  </div>
+  <div class="progress-container">
+    <!-- Progress bar -->
+  </div>
+  <audio [src]="currentTrack.url">
+    Your browser does not support the audio element.
+  </audio>
 </div>
