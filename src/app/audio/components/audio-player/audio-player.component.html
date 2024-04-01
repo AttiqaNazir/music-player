@@ -1,17 +1,60 @@
 <div class="audio-player">
-<!--  <img [src]="currentTrack.coverArt" alt="Cover Art">-->
-  <div class="controls">
-    <button (click)="previousTrack()" [disabled]="isFirstTrack">Previous</button>
-    <button (click)="playPause()">
-      {{ isPlaying ? 'Pause' : 'Play' }}
-    </button>
-    <button (click)="nextTrack()" [disabled]="isLastTrack">Next</button>
-    <button (click)="stop()">Stop</button>
+  <header>
+    <h1>Attiqa's Music Player</h1>
+  </header>
+
+  <div class="container">
+    <div class="content">
+      <p class="label">{{ currentTrack.artistName }}</p>
+      <img
+        [src]="currentTrack.coverArt"
+        alt="Cover Art"
+        width="180"
+        height="180"
+      />
+      <p class="label">{{ currentTrack.songName }}</p>
+    </div>
+    <!-- <mat-list-item *ngFor="let song of songs">
+      <mat-icon color="primary" mat-list-icon>music_note</mat-icon>
+      <h4 mat-line>{{ song.songName}}</h4>
+      <h5 mat-line>by {{ song.artistName }}</h5>
+      <mat-icon color="primary" >volume_up</mat-icon>
+    
+      <mat-divider></mat-divider>
+    </mat-list-item>  -->
+
+    <audio [src]="currentTrack.url">
+      Your browser does not support the audio element.
+    </audio>
   </div>
-  <div class="progress-container">
-    <mat-progress-bar mode="determinate" [value]="progress" (click)="seek($event)"></mat-progress-bar>
+  <div class="controls-container">
+    <div class="progress-container">
+      <mat-progress-bar
+        mode="determinate"
+        [value]="progress"
+        (click)="seek($event)"
+      ></mat-progress-bar>
+    </div>
+    <footer>
+      <div class="controls">
+        <button
+          mat-icon-button
+          (click)="previousTrack()"
+          [disabled]="isFirstTrack"
+        >
+        <mat-icon>skip_previous</mat-icon>
+        </button>
+        <button mat-icon-button (click)="playPause()">
+          <mat-icon>{{ isPlaying ? "pause" : "play_arrow" }} </mat-icon>
+        </button>
+
+        <button mat-icon-button (click)="stop()">
+          <mat-icon>stop</mat-icon>
+        </button>
+        <button mat-icon-button (click)="nextTrack()" [disabled]="isLastTrack">
+          <mat-icon>skip_next</mat-icon>
+        </button>
+      </div>
+    </footer>
   </div>
-  <audio [src]="currentTrack.url">
-    Your browser does not support the audio element.
-  </audio>
 </div>

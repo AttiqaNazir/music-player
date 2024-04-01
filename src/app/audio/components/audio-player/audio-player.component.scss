@@ -1,0 +1,84 @@
+.audio-player {
+  border: 1px solid #000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  font-family:
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+img {
+  width: 20em;
+  height: 15em;
+}
+
+header {
+  padding: 20px;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: left;
+  font-style: italic;
+}
+
+h1 {
+  font-size: 24px;
+  line-height: 19px;
+  color: #88898c;
+  text-transform: uppercase;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.progress-container {
+  position: relative;
+  width: 100%;
+  .mdc-linear-progress {
+    height: var(--mdc-linear-progress-track-height, 10px);
+  }
+}
+:host ::ng-deep {
+  .mdc-linear-progress__bar-inner {
+    border-top-width: var(--mdc-linear-progress-track-height, 10px);
+  }
+}
+
+::ng-deep {
+  button {
+    margin: 20px 10px;
+    border-radius: 100%;
+    background-color: #b6b6b6;
+    border: 1px solid #838383;
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  padding: 10px;
+}
