@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Track } from '../types/domain';
-import {tracks} from "../fixtures/tracks";
+import { tracks } from '../fixtures/tracks';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AudioService {
-  audio: HTMLAudioElement = new Audio();
-  tracks: Track[] = [];
-  currentTrackIndex: number = 0;
+  public audio: HTMLAudioElement = new Audio();
+  private tracks: Track[] = [];
+  private currentTrackIndex: number = 0;
+  private isPlaying = false;
+  private playbackPosition = 0;
 
   constructor() {
     this.tracks.push(...tracks);
@@ -19,6 +21,10 @@ export class AudioService {
 
   setTracks(tracks: Track[]) {
     this.tracks = tracks;
+  }
+
+  public getTracks() {
+    return this.tracks;
   }
 
   getCurrentTrack(): Track {
@@ -36,13 +42,18 @@ export class AudioService {
   play(): void {
     if (this.audio.paused) {
       this.audio.src = this.getCurrentTrack().url;
+
+      this.audio.currentTime = this.playbackPosition;
       this.audio.play();
+      this.isPlaying = true;
     }
   }
 
   pause() {
     if (!this.audio.paused) {
       this.audio.pause();
+      this.isPlaying = false;
+      this.playbackPosition = this.audio.currentTime;
     }
   }
 
