@@ -7,9 +7,10 @@ import { tracks } from '../fixtures/tracks';
 })
 export class AudioService {
   public audio: HTMLAudioElement = new Audio();
+  public isPlaying: boolean = false;
+  public currentTrackIndex: number = 0;
+
   private tracks: Track[] = [];
-  private currentTrackIndex: number = 0;
-  private isPlaying = false;
   private playbackPosition = 0;
 
   constructor() {
@@ -19,7 +20,7 @@ export class AudioService {
     });
   }
 
-  setTracks(tracks: Track[]) {
+  private setTracks(tracks: Track[]) {
     this.tracks = tracks;
   }
 
@@ -27,37 +28,35 @@ export class AudioService {
     return this.tracks;
   }
 
-  getCurrentTrack(): Track {
+  public getCurrentTrack(): Track {
     return this.tracks[this.currentTrackIndex];
   }
 
-  checkIfLastTrack(): boolean {
+  public checkIfLastTrack(): boolean {
     return this.currentTrackIndex === this.tracks.length - 1;
   }
 
-  checkIfFirstTrack(): boolean {
+  public checkIfFirstTrack(): boolean {
     return this.currentTrackIndex === 0;
   }
 
-  play(): void {
+  public play(): void {
     if (this.audio.paused) {
       this.audio.src = this.getCurrentTrack().url;
 
       this.audio.currentTime = this.playbackPosition;
       this.audio.play();
-      this.isPlaying = true;
     }
   }
 
-  pause() {
+  public pause() {
     if (!this.audio.paused) {
       this.audio.pause();
-      this.isPlaying = false;
       this.playbackPosition = this.audio.currentTime;
     }
   }
 
-  nextTrack() {
+  public nextTrack() {
     if (this.currentTrackIndex < this.tracks.length - 1) {
       this.currentTrackIndex++;
       this.audio.src = this.getCurrentTrack().url;
@@ -65,7 +64,7 @@ export class AudioService {
     }
   }
 
-  previousTrack() {
+  public previousTrack() {
     if (this.currentTrackIndex > 0) {
       this.currentTrackIndex--;
       this.audio.src = this.getCurrentTrack().url;
@@ -73,8 +72,9 @@ export class AudioService {
     }
   }
 
-  stop() {
+  public stop() {
     this.audio.pause();
     this.audio.currentTime = 0;
+    this.playbackPosition = 0;
   }
 }
