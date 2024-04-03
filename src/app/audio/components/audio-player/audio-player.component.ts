@@ -9,7 +9,7 @@ import { AudioService } from '../../services/audio-service.service';
   styleUrls: ['./audio-player.component.scss'],
 })
 export class AudioPlayerComponent implements OnInit {
-  public currentTrack!: Track;
+  public currentTrack: Track | null = null;
   public currentTrackIndex: number = 0;
   public isPlaying: boolean = false;
   public isFirstTrack: boolean = true;
@@ -20,12 +20,17 @@ export class AudioPlayerComponent implements OnInit {
   constructor(private audioService: AudioService) {}
 
   ngOnInit() {
-    this.songs = this.audioService.getTracks();
-    console.log(this.songs);
-    this.currentTrack = this.audioService.getCurrentTrack();
-    this.currentTrackIndex = this.audioService.currentTrackIndex;
-    this.audioService.audio.addEventListener('timeupdate', () => {
-      this.updateProgress();
+    this.audioService.fetchTracks().subscribe({
+      next: (v) => {
+        this.audioService.setTracks(v);
+        this.songs = [...v];
+        this.currentTrack = this.audioService.getCurrentTrack();
+        this.currentTrackIndex = this.audioService.currentTrackIndex;
+        this.audioService.audio.addEventListener('timeupdate', () => {
+          this.updateProgress();
+        });
+      },
+      error: (e) => console.error(e.message),
     });
   }
 
@@ -59,7 +64,7 @@ export class AudioPlayerComponent implements OnInit {
     this.isPlaying = false;
   }
 
-  public openFile(song: Track, index: number) {
+  public playSong(song: Track, index: number) {
     this.audioService.currentTrackIndex = index;
     this.updateTrackInfo();
     this.stop();
@@ -88,10 +93,8 @@ export class AudioPlayerComponent implements OnInit {
     const progressBarWidth = progressBar.clientWidth;
     const seekPercentage = offsetX / progressBarWidth;
 
-    // Check if duration is finite
     const audio = this.audioService.audio;
     if (isFinite(audio.duration)) {
-      // Calculate seek position
       audio.currentTime = audio.duration * seekPercentage;
     }
   }

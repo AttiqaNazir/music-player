@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Track } from '../types/domain';
-import { tracks } from '../fixtures/tracks';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+
+import { Track, TrackResponse } from '../types/domain';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +16,29 @@ export class AudioService {
   private tracks: Track[] = [];
   private playbackPosition = 0;
 
-  constructor() {
-    this.tracks.push(...tracks);
+  constructor(private http: HttpClient) {
     this.audio.addEventListener('ended', () => {
       this.nextTrack();
     });
   }
 
-  private setTracks(tracks: Track[]) {
-    this.tracks = tracks;
+  setTracks(tracks: Track[]) {
+    this.tracks = [...tracks];
+  }
+
+  fetchTracks(): Observable<Track[]> {
+    return this.http
+      .get<TrackResponse>('http://localhost:4200/assets/mockdata.json')
+      .pipe(
+        map(({ response }: TrackResponse) => {
+          return response.map((item) => ({
+            ...item,
+          }));
+        }),
+        catchError((error) =>
+          throwError(() => new Error(error.message ?? 'Something went wrong')),
+        ),
+      );
   }
 
   public getTracks() {
@@ -59,6 +76,7 @@ export class AudioService {
   public nextTrack() {
     if (this.currentTrackIndex < this.tracks.length - 1) {
       this.currentTrackIndex++;
+      this.audio.currentTime = 0;
       this.audio.src = this.getCurrentTrack().url;
       this.play();
     }
@@ -67,6 +85,7 @@ export class AudioService {
   public previousTrack() {
     if (this.currentTrackIndex > 0) {
       this.currentTrackIndex--;
+      this.audio.currentTime = 0;
       this.audio.src = this.getCurrentTrack().url;
       this.play();
     }

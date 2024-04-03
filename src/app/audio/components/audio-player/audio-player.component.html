@@ -5,21 +5,21 @@
 
   <div class="container">
     <div class="content">
-      <p class="label">{{ currentTrack.artistName }}</p>
+      <p class="label">{{ currentTrack?.artistName }}</p>
       <img
-        [src]="currentTrack.coverArt"
+        [src]="currentTrack?.coverArt"
         alt="Cover Art"
         width="180"
         height="180"
       />
-      <p class="label">{{ currentTrack.songName }}</p>
+      <p class="label">{{ currentTrack?.songName }}</p>
     </div>
 
     <div class="song-content">
       <div class="song-list">
         <mat-list-item
           *ngFor="let song of songs; let i = index"
-          (click)="openFile(song, i)"
+          (click)="playSong(song, i)"
         >
           <span class="flex">
             <mat-icon color="primary" mat-list-icon>music_note</mat-icon>

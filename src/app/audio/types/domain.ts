@@ -4,3 +4,7 @@ export type Track = {
   artistName: string;
   coverArt: string;
 };
+
+export type TrackResponse = {
+  response: Track[];
+};
