@@ -14,19 +14,24 @@
       />
       <p class="label">{{ currentTrack.songName }}</p>
     </div>
-    <!-- <mat-list-item *ngFor="let song of songs">
-      <mat-icon color="primary" mat-list-icon>music_note</mat-icon>
-      <h4 mat-line>{{ song.songName}}</h4>
-      <h5 mat-line>by {{ song.artistName }}</h5>
-      <mat-icon color="primary" >volume_up</mat-icon>
-    
-      <mat-divider></mat-divider>
-    </mat-list-item>  -->
 
-    <audio [src]="currentTrack.url">
-      Your browser does not support the audio element.
-    </audio>
+    <div class="song-content">
+      <div class="song-list">
+        <mat-list-item
+          *ngFor="let song of songs; let i = index"
+          (click)="openFile(song, i)"
+        >
+          <span class="flex">
+            <mat-icon color="primary" mat-list-icon>music_note</mat-icon>
+            <h4 mat-line>{{ song.songName }}</h4>
+          </span>
+          <h5 mat-line>by {{ song.artistName }}</h5>
+          <mat-divider></mat-divider>
+        </mat-list-item>
+      </div>
+    </div>
   </div>
+
   <div class="controls-container">
     <div class="progress-container">
       <mat-progress-bar
@@ -42,7 +47,7 @@
           (click)="previousTrack()"
           [disabled]="isFirstTrack"
         >
-        <mat-icon>skip_previous</mat-icon>
+          <mat-icon>skip_previous</mat-icon>
         </button>
         <button mat-icon-button (click)="playPause()">
           <mat-icon>{{ isPlaying ? "pause" : "play_arrow" }} </mat-icon>
@@ -51,7 +56,12 @@
         <button mat-icon-button (click)="stop()">
           <mat-icon>stop</mat-icon>
         </button>
-        <button mat-icon-button (click)="nextTrack()" [disabled]="isLastTrack">
+        <button
+          class="next-button"
+          mat-icon-button
+          (click)="nextTrack()"
+          [disabled]="isLastTrack"
+        >
           <mat-icon>skip_next</mat-icon>
         </button>
       </div>

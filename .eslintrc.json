@@ -27,7 +27,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "@typescript-eslint/no-inferrable-types": "off" // Disable no-inferrable-types rule
       }
     },
     {

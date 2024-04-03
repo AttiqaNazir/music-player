@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Track } from '../../types/domain';
 import { AudioService } from '../../services/audio-service.service';
+
 @Component({
   selector: 'app-audio-player',
   templateUrl: './audio-player.component.html',
@@ -9,19 +10,20 @@ import { AudioService } from '../../services/audio-service.service';
 })
 export class AudioPlayerComponent implements OnInit {
   public currentTrack!: Track;
+  public currentTrackIndex: number = 0;
   public isPlaying: boolean = false;
   public isFirstTrack: boolean = true;
   public isLastTrack: boolean = false;
   public progress: number = 0;
-  // public songs: Track[] = [];
+  public songs: Track[] = [];
 
   constructor(private audioService: AudioService) {}
 
   ngOnInit() {
-    //this.songs = this.audioService.getTracks();
+    this.songs = this.audioService.getTracks();
+    console.log(this.songs);
     this.currentTrack = this.audioService.getCurrentTrack();
-    console.log(this.currentTrack);
-
+    this.currentTrackIndex = this.audioService.currentTrackIndex;
     this.audioService.audio.addEventListener('timeupdate', () => {
       this.updateProgress();
     });
@@ -55,6 +57,21 @@ export class AudioPlayerComponent implements OnInit {
   stop() {
     this.audioService.stop();
     this.isPlaying = false;
+  }
+
+  public openFile(song: Track, index: number) {
+    this.audioService.currentTrackIndex = index;
+    this.updateTrackInfo();
+    this.stop();
+    this.playPause();
+  }
+
+  private updateTrackInfo() {
+    this.currentTrack = this.audioService.getCurrentTrack();
+    this.currentTrackIndex = this.audioService.currentTrackIndex;
+    this.isPlaying = true;
+    this.isFirstTrack = this.audioService.checkIfFirstTrack();
+    this.isLastTrack = this.audioService.checkIfLastTrack();
   }
 
   updateProgress() {
