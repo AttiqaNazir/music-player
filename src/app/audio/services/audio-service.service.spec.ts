@@ -3,13 +3,17 @@ import { TestBed } from '@angular/core/testing';
 import { AudioService } from './audio-service.service';
 import { Track } from '../types/domain';
 import { tracks } from '../fixtures/tracks';
+import { HttpClientModule } from '@angular/common/http';
 
-describe('AudioServiceService', () => {
+describe('AudioService', () => {
   let service: AudioService;
   let testTracks: Track[];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule],
+      providers: [AudioService],
+    }).compileComponents();
     service = TestBed.inject(AudioService);
     testTracks = tracks;
   });
@@ -41,6 +45,7 @@ describe('AudioServiceService', () => {
 
   it('should play the audio', () => {
     spyOn(service.audio, 'play');
+    spyOn(service, 'getCurrentTrack').and.returnValue(testTracks[0]);
     service.play();
     expect(service.audio.src).toEqual(service.getCurrentTrack().url);
     expect(service.audio.play).toHaveBeenCalled();
@@ -58,6 +63,7 @@ describe('AudioServiceService', () => {
 
   it('should play the previous track', () => {
     spyOn(service.audio, 'play');
+    spyOn(service, 'getCurrentTrack').and.returnValue(testTracks[0]);
     service.currentTrackIndex = 1;
     const initialIndex = service.currentTrackIndex;
     service.previousTrack();

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AudioRoutingModule } from './audio-routing.module';
 import { AudioPlayerComponent } from './components/audio-player/audio-player.component';
@@ -11,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
   declarations: [AudioPlayerComponent],
   imports: [
     CommonModule,
+    HttpClientModule,
     AudioRoutingModule,
     MatProgressBarModule,
     MatCardModule,

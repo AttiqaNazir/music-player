@@ -1,10 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AudioPlayerComponent } from './audio-player.component';
+
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { HttpClientModule } from '@angular/common/http';
 describe('AudioPlayerComponent', () => {
   let component: AudioPlayerComponent;
   let fixture: ComponentFixture<AudioPlayerComponent>;
@@ -16,6 +18,7 @@ describe('AudioPlayerComponent', () => {
         MatCardModule,
         MatIconModule,
         MatListModule,
+        HttpClientModule,
       ],
       declarations: [AudioPlayerComponent],
     }).compileComponents();
